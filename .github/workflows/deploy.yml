@@ -17,7 +17,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Sync frontend to S3
@@ -25,10 +25,10 @@ jobs:
         aws s3 sync ./frontend s3://${{ secrets.S3_BUCKET }} --delete
 
     - name: Invalidate CloudFront cache
-      if: env.CLOUDFRONT_DIST_ID != ''
+      if: env.CLOUDFRONT_DISTR_ID != ''
       env:
-        CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
+        CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DISTR_ID }}
       run: |
         aws cloudfront create-invalidation \
-          --distribution-id $CLOUDFRONT_DIST_ID \
+          --distribution-id $CLOUDFRONT_DISTR_ID \
           --paths "/*"
